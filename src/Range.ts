@@ -1,24 +1,30 @@
-import { Comparable, Comparator } from './types'
+import { Comparator } from './types'
 
-const makeComparator = <T>(): Comparator<T> => ({
-  compare(o1, o2) {
-    return o1.compareTo(o2)
-  },
-})
+const makeComparator =
+  <T>() =>
+  (v1: T, v2: T) => {
+    if (v1 < v2) {
+      return -1
+    } else if (v1 > v2) {
+      return 1
+    } else {
+      return 0
+    }
+  }
 
-class Range<C extends Comparable<C>> {
-  private minimum: C
-  private maximum: C
-  private comparator: Comparator<C>
+class Range<T> {
+  protected minimum: T
+  protected maximum: T
+  protected comparator: Comparator<T>
 
-  private constructor(
-    fromInclusive: C,
-    toInclusive: C,
-    comp: Comparator<C> | null = null
+  protected constructor(
+    fromInclusive: T,
+    toInclusive: T,
+    comp: Comparator<T> | null = null
   ) {
-    this.comparator = comp === null ? makeComparator<C>() : comp
+    this.comparator = comp === null ? makeComparator<T>() : comp
 
-    if (this.comparator.compare(fromInclusive, toInclusive) === -1) {
+    if (this.comparator(fromInclusive, toInclusive) === -1) {
       this.minimum = fromInclusive
       this.maximum = toInclusive
     } else {
@@ -27,46 +33,46 @@ class Range<C extends Comparable<C>> {
     }
   }
 
-  public static between<C2 extends Comparable<C2>>(
-    fromInclusive: C2,
-    toInclusive: C2,
-    comparator: Comparator<C2> | null = null
-  ): Range<C2> {
+  public static between<T>(
+    fromInclusive: T,
+    toInclusive: T,
+    comparator: Comparator<T> | null = null
+  ): Range<T> {
     return new Range(fromInclusive, toInclusive, comparator)
   }
 
-  public static is<C2 extends Comparable<C2>>(
-    element: C2,
-    comparator: Comparator<C2> | null = null
-  ): Range<C2> {
+  public static is<T>(
+    element: T,
+    comparator: Comparator<T> | null = null
+  ): Range<T> {
     return Range.between(element, element, comparator)
   }
 
-  public contains(element: C): boolean {
+  public contains(element: T): boolean {
     return (
-      this.comparator.compare(this.minimum, element) <= 0 &&
-      this.comparator.compare(this.maximum, element) >= 0
+      this.comparator(this.minimum, element) <= 0 &&
+      this.comparator(this.maximum, element) >= 0
     )
   }
 
-  public containsRange(other: Range<C>): boolean {
+  public containsRange(other: Range<T>): boolean {
     return (
-      this.comparator.compare(this.minimum, other.getMinimum()) <= 0 &&
-      this.comparator.compare(this.maximum, other.getMaximum()) >= 0
+      this.comparator(this.minimum, other.getMinimum()) <= 0 &&
+      this.comparator(this.maximum, other.getMaximum()) >= 0
     )
   }
 
-  public elementCompareTo(element: C): -1 | 0 | 1 {
-    if (this.comparator.compare(this.minimum, element) === 1) {
+  public elementCompareTo(element: T): -1 | 0 | 1 {
+    if (this.comparator(this.minimum, element) === 1) {
       return -1
     }
-    if (this.comparator.compare(this.maximum, element) === -1) {
+    if (this.comparator(this.maximum, element) === -1) {
       return 1
     }
     return 0
   }
 
-  public fit(element: C): C {
+  public fit(element: T): T {
     if (this.elementCompareTo(element) === -1) {
       return this.minimum
     }
@@ -76,56 +82,56 @@ class Range<C extends Comparable<C>> {
     return element
   }
 
-  public getMaximum(): C {
+  public getMaximum(): T {
     return this.maximum
   }
 
-  public getMinimum(): C {
+  public getMinimum(): T {
     return this.minimum
   }
 
-  public getComparator(): Comparator<C> {
+  public getComparator(): Comparator<T> {
     return this.comparator
   }
 
-  public intersectionWith(other: Range<C>): Range<C> {
+  public intersectionWith(other: Range<T>): Range<T> {
     if (!this.isOverlappedBy(other)) {
       throw new Error(
         `Cannot calculate intersection with non-overlapping range ${other}`
       )
     }
     const min =
-      this.getComparator().compare(this.minimum, other.getMinimum()) < 0
+      this.getComparator()(this.minimum, other.getMinimum()) < 0
         ? other.getMinimum()
         : this.minimum
     const max =
-      this.getComparator().compare(this.maximum, other.getMaximum()) < 0
+      this.getComparator()(this.maximum, other.getMaximum()) < 0
         ? this.maximum
         : other.getMaximum()
     return Range.between(min, max, this.getComparator())
   }
 
-  public isAfter(element: C): boolean {
-    return this.comparator.compare(element, this.minimum) < 0
+  public isAfter(element: T): boolean {
+    return this.comparator(element, this.minimum) < 0
   }
 
-  public isAfterRange(otherRange: Range<C>): boolean {
+  public isAfterRange(otherRange: Range<T>): boolean {
     return this.isAfter(otherRange.getMaximum())
   }
 
-  public isBefore(element: C): boolean {
-    return this.comparator.compare(element, this.maximum) > 0
+  public isBefore(element: T): boolean {
+    return this.comparator(element, this.maximum) > 0
   }
 
-  public isBeforeRange(otherRange: Range<C>): boolean {
+  public isBeforeRange(otherRange: Range<T>): boolean {
     return this.isBefore(otherRange.getMinimum())
   }
 
-  public isEndedBy(element: C): boolean {
-    return this.comparator.compare(element, this.maximum) === 0
+  public isEndedBy(element: T): boolean {
+    return this.comparator(element, this.maximum) === 0
   }
 
-  public isOverlappedBy(otherRange: Range<C>): boolean {
+  public isOverlappedBy(otherRange: Range<T>): boolean {
     return (
       otherRange.contains(this.minimum) ||
       otherRange.contains(this.maximum) ||
@@ -133,8 +139,8 @@ class Range<C extends Comparable<C>> {
     )
   }
 
-  public isStartedBy(element: C): boolean {
-    return this.comparator.compare(element, this.minimum) === 0
+  public isStartedBy(element: T): boolean {
+    return this.comparator(element, this.minimum) === 0
   }
 
   public toString(): string {
