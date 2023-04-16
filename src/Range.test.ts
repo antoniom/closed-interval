@@ -1,7 +1,7 @@
 import Range from './Range'
 
 describe('Testing Range class', () => {
-  describe('testing with primitives', () => {
+  describe('using primitives', () => {
     describe('between() static method', () => {
       it('Sets the correct min/max when calling Range.between in the correct order', () => {
         const range = Range.between(5, 15)
@@ -437,6 +437,43 @@ describe('Testing Range class', () => {
       const range = Range.between(5, 15)
       it('returns a bracketed string containing the range edges', () => {
         expect(range.toString()).toEqual('[5..15]')
+      })
+    })
+  })
+
+  describe('using non primitives', () => {
+    describe('between() static method', () => {
+      it('Sets the correct min/max when calling Range.between', () => {
+        const range = Range.between({ foo: 5 }, { foo: 15 }, (n1, n2) => {
+          if (n1.foo < n2.foo) {
+            return -1
+          } else if (n1.foo > n2.foo) {
+            return 1
+          }
+
+          return 0
+        })
+
+        expect(range.getMinimum()).toEqual({ foo: 5 })
+        expect(range.getMaximum()).toEqual({ foo: 15 })
+      })
+    })
+  })
+  describe('using custom comparator', () => {
+    describe('between() static method', () => {
+      it('Sets the correct min/max when calling Range.between', () => {
+        const range = Range.between(5, 15, (n1, n2) => {
+          if (n1 < n2) {
+            return 1
+          } else if (n1 > n2) {
+            return -1
+          }
+
+          return 0
+        })
+
+        expect(range.getMinimum()).toEqual(15)
+        expect(range.getMaximum()).toEqual(5)
       })
     })
   })
