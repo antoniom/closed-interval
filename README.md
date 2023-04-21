@@ -1,6 +1,6 @@
 # closed-interval
 
-closed-interval is a TypeScript port of the [Apache Common's Range class](https://mathjs.org) offered by the JVM based languages.
+closed-interval is a TypeScript port of the [Apache Commons Range class](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/Range.html) offered by the JVM based languages.
 
 The API aims to be identical to Apache Commons, with a few exceptions where the TypeScript implementation is simpler or not applicable.
 
