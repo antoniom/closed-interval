@@ -57,8 +57,7 @@ class Range<T> {
 
   public containsRange(other: Range<T>): boolean {
     return (
-      this.comparator(this.minimum, other.getMinimum()) <= 0 &&
-      this.comparator(this.maximum, other.getMaximum()) >= 0
+      this.contains(other.getMinimum()) && this.contains(other.getMaximum())
     )
   }
 
