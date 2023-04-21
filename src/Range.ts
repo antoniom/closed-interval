@@ -81,16 +81,16 @@ class Range<T> {
     return element
   }
 
+  public getComparator(): Comparator<T> {
+    return this.comparator
+  }
+
   public getMaximum(): T {
     return this.maximum
   }
 
   public getMinimum(): T {
     return this.minimum
-  }
-
-  public getComparator(): Comparator<T> {
-    return this.comparator
   }
 
   public intersectionWith(other: Range<T>): Range<T> {
