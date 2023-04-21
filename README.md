@@ -14,8 +14,11 @@ npm i closed-interval
 
 and use the `Range` class in your code:
 
-```ts
+```js
 import Range from 'closed-interval'
+
+// or as a CommonJS module
+// const { default: Range } = require('closed-interval')
 
 const range = Range.between(10, 100)
 const containsOtherRange = range.contains(Range.between(40, 50)) // true
