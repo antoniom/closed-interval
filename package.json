@@ -1,14 +1,19 @@
 {
-  "name": "range",
+  "name": "closed-interval",
   "version": "1.0.0",
-  "description": "",
+  "description": "Utilities for working with a range of items of any type",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "math",
+    "interval",
+    "range",
+    "closed-interval"
+  ],
+  "author": "Antonis Balasas <abalasas@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "jest": "^29.5.0",
