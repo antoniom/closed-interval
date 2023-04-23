@@ -1,14 +1,14 @@
 {
   "name": "closed-interval",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utilities for working with a range of items of any type",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "exports": {
-      ".": {
-          "import": "./dist/esm/index.js",
-          "require": "./dist/cjs/index.js"
-      }
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "scripts": {
     "build": "rimraf dist/ && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && ./fixup",
