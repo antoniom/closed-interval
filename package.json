@@ -18,6 +18,9 @@
     "type": "git",
     "url": "https://github.com/antoniom/closed-interval.git"
   },
+  "files": [
+    "dist/"
+  ],
   "keywords": [
     "math",
     "interval",
