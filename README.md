@@ -179,6 +179,17 @@ isEndedBy(element: T): boolean
 
 Checks whether this range ends with the specified element.
 
+### isNaturalOrdering
+
+```typescript
+
+isNaturalOrdering(): boolean
+```
+
+Whether or not the Range is using the natural ordering of the elements.
+
+Natural ordering uses an internal comparator implementation, thus this method is the only way to check if a null comparator was specified.
+
 ### isOverlappedBy
 
 ```typescript

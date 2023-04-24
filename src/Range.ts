@@ -20,9 +20,10 @@ class Range<T> {
   protected constructor(
     fromInclusive: T,
     toInclusive: T,
-    comp: Comparator<T> | null = null
+    private customComparator: Comparator<T> | null = null
   ) {
-    this.comparator = comp === null ? makeComparator<T>() : comp
+    this.comparator =
+      customComparator === null ? makeComparator<T>() : customComparator
 
     if (this.comparator(fromInclusive, toInclusive) === -1) {
       this.minimum = fromInclusive
@@ -128,6 +129,10 @@ class Range<T> {
 
   public isEndedBy(element: T): boolean {
     return this.comparator(element, this.maximum) === 0
+  }
+
+  public isNaturalOrdering(): boolean {
+    return this.customComparator === null
   }
 
   public isOverlappedBy(otherRange: Range<T>): boolean {

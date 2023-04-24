@@ -372,6 +372,13 @@ describe('Testing Range class', () => {
       })
     })
 
+    describe('isNaturalOrdering', () => {
+      const range = Range.between(5, 15)
+      it('returns true when no custom comparator is used', () => {
+        expect(range.isNaturalOrdering()).toBe(true)
+      })
+    })
+
     describe('isOverlappedBy', () => {
       const range = Range.between(5, 15)
       it('returns false when the range is after the passed range', () => {
@@ -442,38 +449,49 @@ describe('Testing Range class', () => {
   })
 
   describe('using non primitives', () => {
+    const range = Range.between({ foo: 5 }, { foo: 15 }, (n1, n2) => {
+      if (n1.foo < n2.foo) {
+        return -1
+      } else if (n1.foo > n2.foo) {
+        return 1
+      }
+
+      return 0
+    })
     describe('between() static method', () => {
       it('Sets the correct min/max when calling Range.between', () => {
-        const range = Range.between({ foo: 5 }, { foo: 15 }, (n1, n2) => {
-          if (n1.foo < n2.foo) {
-            return -1
-          } else if (n1.foo > n2.foo) {
-            return 1
-          }
-
-          return 0
-        })
-
         expect(range.getMinimum()).toEqual({ foo: 5 })
         expect(range.getMaximum()).toEqual({ foo: 15 })
       })
     })
+
+    describe('isNaturalOrdering', () => {
+      it('returns false when a custom comparator is used', () => {
+        expect(range.isNaturalOrdering()).toBe(false)
+      })
+    })
   })
+
   describe('using custom comparator', () => {
+    const range = Range.between(5, 15, (n1, n2) => {
+      if (n1 < n2) {
+        return 1
+      } else if (n1 > n2) {
+        return -1
+      }
+
+      return 0
+    })
     describe('between() static method', () => {
       it('Sets the correct min/max when calling Range.between', () => {
-        const range = Range.between(5, 15, (n1, n2) => {
-          if (n1 < n2) {
-            return 1
-          } else if (n1 > n2) {
-            return -1
-          }
-
-          return 0
-        })
-
         expect(range.getMinimum()).toEqual(15)
         expect(range.getMaximum()).toEqual(5)
+      })
+    })
+
+    describe('isNaturalOrdering', () => {
+      it('returns false when a custom comparator is used', () => {
+        expect(range.isNaturalOrdering()).toBe(false)
       })
     })
   })
