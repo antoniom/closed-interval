@@ -34,7 +34,18 @@ class Range<T> {
     }
   }
 
+  /**
+   * @deprecated Use Range.of instead.
+   */
   public static between<T>(
+    fromInclusive: T,
+    toInclusive: T,
+    comparator: Comparator<T> | null = null
+  ): Range<T> {
+    return Range.of(fromInclusive, toInclusive, comparator)
+  }
+
+  public static of<T>(
     fromInclusive: T,
     toInclusive: T,
     comparator: Comparator<T> | null = null
