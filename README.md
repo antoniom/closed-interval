@@ -34,10 +34,19 @@ Since the API closely resembles the implementation of Apache Commons, the docume
 ```typescript
 
 Range.between<T>(fromInclusive: T, toInclusive: T, comparator: Comparator<T> | null = null): Range<T>
-
 ```
 
-Obtains a range with the specified minimum and maximum values (both inclusive).
+**_Deprecated_**
+Use [Range.of](#rangeof)
+
+### Range.of
+
+```typescript
+
+Range.of<T>(fromInclusive: T, toInclusive: T, comparator: Comparator<T> | null = null): Range<T>
+```
+
+Creates a range with the specified minimum and maximum values (both inclusive).
 
 The range uses the natural ordering of the elements (when applicable) to determine where values lie in the range unless a comparator is passed.
 
@@ -50,7 +59,7 @@ The arguments may be passed in the order (min,max) or (max,min). The getMinimum 
 Range.is<T>(element: T, comparator: Comparator<T> | null = null): Range<T>
 ```
 
-Obtains a range using the specified element as both the minimum and maximum in this range.
+Creates a range using the specified element as both the minimum and maximum in this range.
 
 The range uses the natural ordering of the elements (when applicable) to determine where values lie in the range unless a comparator is passed.
 
